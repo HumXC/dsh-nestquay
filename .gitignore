@@ -1,0 +1,26 @@
+# Dependencies and generated files
+node_modules/
+/lib/
+/dist/
+coverage/
+*.tsbuildinfo
+*.tgz
+*.log
+
+# Local settings and credentials
+.env
+.env.*
+!.env.example
+.DS_Store
+.direnv/
+result
+
+# Local tooling data
+.dsh/
+.gitnexus/
+.mnemon/
+.pi/
+.work/
+
+# Original font download; the build uses the bundled WOFF2 file
+/assets/*.ttf

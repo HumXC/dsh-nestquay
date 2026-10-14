@@ -1,0 +1,10 @@
+import { readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+const source = await readFile(new URL('../src/client.tsx', import.meta.url), 'utf8');
+const tokens = [...new Set([...source.matchAll(/var\((--dsw-[\w-]+)/g)].map((match) => match[1]))];
+const expression = `JSON.stringify((() => { const element = document.querySelector('.hHd-Xa_root') || document.documentElement; const style = getComputedStyle(element); return { checked: ${JSON.stringify(tokens)}.length, missing: ${JSON.stringify(tokens)}.filter(key => !style.getPropertyValue(key).trim()) }; })())`;
+const output = execFileSync('npx', ['--yes', 'agent-browser', '--session', 'nestquay-dev', '--executable-path', process.env.NESTQUAY_CHROMIUM, 'eval', expression], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000 });
+let result = JSON.parse(output.trim());
+if (typeof result === 'string') result = JSON.parse(result);
+console.log(JSON.stringify(result));
+if (result.missing.length) process.exitCode = 1;

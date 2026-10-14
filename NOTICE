@@ -1,0 +1,40 @@
+Nestquay includes an adapted copy of the workspace browser from:
+
+Package: @deepseek-ai/dsh-client-ui-workspace
+Version: 0.2.0-rc.2
+Declared license: MIT
+Repository metadata: https://github.com/deepseek-ai/deepseek-harness
+Package directory: packages/client/ui-workspace
+
+The generated adapter retains original source comments. The dependency package's
+published metadata declares MIT. Its browser implementation remains the work of
+its original authors; Nestquay adds group filtering, heading controls and menu
+contributions in its own generated artifact.
+
+MIT permission terms applicable to the upstream implementation:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Nestquay also includes Twemoji Mozilla v0.7.0 from:
+https://github.com/mozilla/twemoji-colr/releases/tag/v0.7.0
+Copyright 2016-2018 Mozilla Foundation; font-generation code is Apache-2.0.
+Twemoji artwork is by Twitter and other contributors, licensed CC-BY-4.0:
+https://creativecommons.org/licenses/by/4.0/
+The original TTF is converted to WOFF2 and embedded; artwork is unchanged.
+Complete upstream attribution and license notice: assets/TWEMOJI-LICENSE.md.
