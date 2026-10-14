@@ -38,10 +38,11 @@ const css = `
 .nq-root{height:100%;min-height:0;display:flex;flex-direction:column;position:relative}.nq-root>div:not(.nq-error){min-height:0}.nq-heading{display:flex;align-items:center;gap:4px;min-width:0}.nq-heading>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;max-width:120px}.nq-icon-button{border:0;background:transparent;color:var(--dsw-alias-label-secondary);padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;width:28px;height:28px;flex-shrink:0}.nq-icon-button:hover{color:var(--dsw-alias-label-primary)}.nq-icon-button:focus-visible,.nq-group:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px;border-radius:50%}.nq-error{color:var(--dsw-alias-state-error-primary);font-size:12px;padding:4px 8px;display:flex;align-items:center;gap:8px}
 .nq-footer{display:flex;align-items:center;gap:4px;width:100%;min-width:0}.nq-viewport{flex:1;min-width:0;overflow:auto;scrollbar-width:none;position:relative}.nq-viewport::-webkit-scrollbar{display:none}.nq-track{display:flex;width:max-content;min-width:100%;justify-content:center;align-items:center;padding:4px 0}.nq-cell{flex:0 0 30px;width:30px;height:38px;position:relative;display:flex;justify-content:center;align-items:center}.nq-compact .nq-cell{width:20px;flex-basis:20px}.nq-compact .nq-cell[data-selected=true]{width:30px;flex-basis:30px}.nq-group{position:relative;border:0;background:transparent;cursor:pointer;color:var(--dsw-alias-label-secondary);width:28px;height:28px;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1}.nq-group[aria-pressed=true]{color:var(--dsw-alias-brand-primary)}.nq-group[aria-pressed=true]:after{content:'';position:absolute;bottom:-3px;left:10px;width:8px;height:2px;background:currentColor;border-radius:2px}.nq-glyph{font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center}.nq-group>.nq-glyph,.nq-dot{position:absolute;left:50%;top:50%;transform-origin:center;pointer-events:none;transition:opacity 200ms ease,transform 200ms ease}.nq-group>.nq-glyph{font-size:16px;width:16px;height:16px;z-index:1;opacity:1;transform:translate(-50%,-50%) scale(1)}.nq-dot{display:block;width:6px;height:6px;opacity:0;transform:translate(-50%,-50%) scale(.4)}.nq-dot-pulse{display:block;width:100%;height:100%;border-radius:50%;background:currentColor}
 .nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-group>.nq-glyph{opacity:0;transform:translate(-50%,-50%) scale(.4)}.nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-dot{opacity:1;transform:translate(-50%,-50%) scale(1)}.nq-compact .nq-cell:hover,.nq-compact .nq-cell:focus-within{z-index:2}
-.nq-running-ring{position:absolute;left:-1px;top:-1px;z-index:0;pointer-events:none;color:var(--dsw-alias-brand-primary);transition:opacity 200ms ease}.nq-group[data-wait=true],.nq-group[data-state=wait]{--nq-status:var(--dsw-alias-state-warn-primary)}.nq-group[data-state=done]{--nq-status:var(--dsw-alias-state-success-primary)}.nq-group[data-state=busy]{--nq-status:var(--dsw-alias-brand-primary)}.nq-group[data-state]:not([data-state=idle]) .nq-dot-pulse{background:var(--nq-status)}.nq-group[data-busy=true] .nq-dot-pulse{animation:nq-breathe 2.8s ease-in-out infinite}.nq-badge{position:absolute;right:2px;top:2px;width:6px;height:6px;border-radius:50%;background:var(--dsw-alias-state-success-primary);box-shadow:0 0 0 2px var(--dsw-specific-sidebar-fill);pointer-events:none;transition:opacity 200ms ease}.nq-group[data-wait=true] .nq-badge{background:var(--dsw-alias-state-warn-primary);border-radius:1px;transform:rotate(45deg)}.nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-badge,.nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-running-ring{opacity:0}.nq-cell[data-dragging=true]{opacity:.45}
-@font-face{font-family:NestquayEmoji;src:url("__NESTQUAY_EMOJI_FONT_URL__") format("woff2");font-display:swap}.nq-emoji,.nq-emoji-input input{font-family:NestquayEmoji,"Apple Color Emoji","Segoe UI Emoji",emoji;font-variant-emoji:emoji}.nq-form{display:grid;gap:16px;min-width:280px}.nq-form label,.nq-picker label{display:grid;gap:8px}.nq-preview{display:flex;align-items:center;gap:12px}.nq-picker-modal{width:min(720px,85vw)!important;max-width:720px!important}.nq-picker{display:grid;gap:12px;width:100%;min-width:280px}.nq-tabs{display:flex;gap:8px;flex-wrap:wrap}.nq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;max-height:360px;min-height:180px;overflow:auto;padding:4px}.nq-choice{width:100%;height:46px;border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:6px}.nq-choice:hover{background:var(--dsw-alias-bg-layer-2)}.nq-choice[aria-pressed=true]{border-color:var(--dsw-alias-brand-primary)}.nq-choice:focus-visible{outline:2px solid var(--dsw-alias-brand-primary)}.nq-group[aria-pressed=false] .nq-emoji{filter:grayscale(1);opacity:.6}.nq-menu-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex:none}.nq-menu-icon svg{width:16px!important;height:16px!important}.nq-empty{color:var(--dsw-alias-label-secondary);font-size:13px;margin:8px}
+.nq-glyph-base,.nq-running-sweep{display:flex;align-items:center;justify-content:center;width:16px;height:16px}.nq-running-sweep{position:absolute;inset:0;color:var(--dsw-alias-brand-primary);mask-image:linear-gradient(to right,transparent 30%,rgba(0,0,0,.4) 42%,#000 50%,rgba(0,0,0,.4) 58%,transparent 70%);-webkit-mask-image:linear-gradient(to right,transparent 30%,rgba(0,0,0,.4) 42%,#000 50%,rgba(0,0,0,.4) 58%,transparent 70%);mask-size:200% 100%;-webkit-mask-size:200% 100%;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat;mask-position:200% 0;-webkit-mask-position:200% 0;animation:nq-color-sweep 3.2s ease-in-out infinite;animation-play-state:paused}.nq-glyph[data-in-viewport=true]>.nq-running-sweep{animation-play-state:running}.nq-group[aria-pressed=true][data-busy=true] .nq-glyph-base{opacity:.82}.nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-running-sweep,.nq-viewport[data-document-hidden=true] .nq-running-sweep{animation-play-state:paused}
+.nq-group[data-wait=true],.nq-group[data-state=wait]{--nq-status:var(--dsw-alias-state-warn-primary)}.nq-group[data-state=done]{--nq-status:var(--dsw-alias-state-success-primary)}.nq-group[data-state=busy]{--nq-status:var(--dsw-alias-brand-primary)}.nq-group[data-state]:not([data-state=idle]) .nq-dot-pulse{background:var(--nq-status)}.nq-group[data-busy=true] .nq-dot-pulse{animation:nq-breathe 2.8s ease-in-out infinite}.nq-badge{position:absolute;right:2px;top:2px;width:6px;height:6px;border-radius:50%;background:var(--dsw-alias-state-success-primary);box-shadow:0 0 0 2px var(--dsw-specific-sidebar-fill);pointer-events:none;transition:opacity 200ms ease}.nq-group[data-wait=true] .nq-badge{background:var(--dsw-alias-state-warn-primary);border-radius:1px;transform:rotate(45deg)}.nq-compact .nq-cell:not([data-selected=true]):not(:hover):not(:focus-within) .nq-badge{opacity:0}.nq-cell[data-dragging=true]{opacity:.45}
+@font-face{font-family:NestquayEmoji;src:url("__NESTQUAY_EMOJI_FONT_URL__") format("woff2");font-display:swap}.nq-emoji,.nq-emoji-input input{font-family:NestquayEmoji,"Apple Color Emoji","Segoe UI Emoji",emoji;font-variant-emoji:emoji}.nq-form{display:grid;gap:16px;min-width:280px}.nq-form label,.nq-picker label{display:grid;gap:8px}.nq-preview{display:flex;align-items:center;gap:12px}.nq-picker-modal{width:min(720px,85vw)!important;max-width:720px!important}.nq-picker{display:grid;gap:12px;width:100%;min-width:280px}.nq-tabs{display:flex;gap:8px;flex-wrap:wrap}.nq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px;max-height:360px;min-height:180px;overflow:auto;padding:4px}.nq-choice{width:100%;height:46px;border:1px solid transparent;background:transparent;display:flex;align-items:center;justify-content:center;color:var(--dsw-alias-label-primary);cursor:pointer;border-radius:6px}.nq-choice:hover{background:var(--dsw-alias-bg-layer-2)}.nq-choice[aria-pressed=true]{border-color:var(--dsw-alias-brand-primary)}.nq-choice:focus-visible{outline:2px solid var(--dsw-alias-brand-primary)}.nq-group[aria-pressed=false] .nq-glyph-base{filter:grayscale(1);opacity:.6}.nq-menu-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;flex:none}.nq-menu-icon svg{width:16px!important;height:16px!important}.nq-empty{color:var(--dsw-alias-label-secondary);font-size:13px;margin:8px}
 .hHd-Xa_footArea:has(.nq-footer){display:flex;flex-direction:row-reverse;align-items:center;gap:4px}.hHd-Xa_footerActions:has(.nq-footer){display:flex;flex:1;min-width:0}.hHd-Xa_footerActions:has(.nq-footer)>*{min-width:0}.hHd-Xa_footArea:has(.nq-footer) .hHd-Xa_settingsArea{width:auto;flex:0 0 auto;overflow:visible}.hHd-Xa_footArea:has(.nq-footer) .hHd-Xa_settingsArea button{min-width:34px;width:34px;height:34px;padding:0;gap:0;justify-content:center;background:transparent;border:0;border-radius:50%;box-shadow:none}.hHd-Xa_footArea:has(.nq-footer) .hHd-Xa_settingsArea [data-slot="settings.trigger"]>span{display:none}.hHd-Xa_footArea:has(.nq-footer) .hHd-Xa_settingsArea button svg{width:20px;height:20px;flex:0 0 20px}
-@keyframes nq-breathe{0%,100%{opacity:.65}50%{opacity:1}}@media(prefers-reduced-motion:reduce){.nq-footer *,.nq-footer *:before,.nq-footer *:after{animation:none!important;transition:none!important}}
+@keyframes nq-color-sweep{0%{mask-position:200% 0;-webkit-mask-position:200% 0}72%,100%{mask-position:-100% 0;-webkit-mask-position:-100% 0}}@keyframes nq-breathe{0%,100%{opacity:.65}50%{opacity:1}}@media(prefers-reduced-motion:reduce){.nq-footer *,.nq-footer *:before,.nq-footer *:after{animation:none!important;transition:none!important}.nq-running-sweep{mask-image:none;-webkit-mask-image:none}}
 `;
 let snapshot: any = null;
 let failure = '';
@@ -82,15 +83,18 @@ function persistGroupOrder(ids: string[]) {
     emit();
 }
 function emit() { viewRevision++; listeners.forEach((fn) => fn()); }
-function useData() { useSyncExternalStore((fn: () => void) => { listeners.add(fn); return () => listeners.delete(fn); }, () => viewRevision); return snapshot; }
+function subscribeView(fn: () => void) { listeners.add(fn); return () => listeners.delete(fn); }
+function useData() { useSyncExternalStore(subscribeView, () => viewRevision); return snapshot; }
 async function request(operation: any) {
     const response = await fetch('/api/nestquay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(operation) });
     const data = await response.json();
     if (!response.ok || data.error) throw new Error(data.error || '分组操作失败');
     const next = data.snapshot || data;
-    if (!snapshot || next.revision >= snapshot.revision) snapshot = next;
+    const changed = !snapshot || next.revision > snapshot.revision;
+    if (changed) snapshot = next;
+    const recovered = failure !== '';
     failure = '';
-    emit();
+    if (changed || recovered) emit();
     return snapshot;
 }
 function dispatch(operation: any) { return request(operation).catch((error) => { failure = error.message; emit(); throw error; }); }
@@ -126,8 +130,6 @@ function Heading({ title }: any) {
 }
 function GroupDialogs() {
     useData();
-    const [, refresh] = useState(0);
-    useEffect(() => { const fn = () => refresh((v: number) => v + 1); listeners.add(fn); return () => listeners.delete(fn); }, []);
     const [draft, setDraft] = useState(null as any);
     const [pick, setPick] = useState(false);
     const [tab, setTab] = useState('emoji');
@@ -180,16 +182,55 @@ function GroupDialogs() {
         </P.Modal>
     </>;
 }
-function aggregate(groupId: string, data: any, workspaces: any[], statuses: Map<string, any>, sessions: any) {
-    const ids = new Set<string>();
-    workspaces.filter((w) => membership(data, w.workspaceId).includes(groupId)).forEach((w) => w.sessionIds.forEach((id: string) => ids.add(id)));
-    for (const id of [...ids]) {
-        const catalog = sessions.projectionsBySession?.[id]?.values?.subagentCatalog;
-        if (catalog) for (const item of Object.values(catalog) as any[]) if (item?.id) ids.add(item.id);
+type GroupRoots = Map<string, string[]>;
+type GroupActivity = Map<string, Map<string, boolean>>;
+type GroupCounts = Map<string, { running: number; pending: number; unread: number }>;
+function sameMap<T>(left: Map<string, T>, right: Map<string, T>, equal: (a: T, b: T) => boolean = Object.is): boolean {
+    if (left === right) return true;
+    if (left.size !== right.size) return false;
+    for (const [id, value] of left) if (!right.has(id) || !equal(value, right.get(id)!)) return false;
+    return true;
+}
+function selectGroupRoots(data: any, workspaces: any[]): GroupRoots {
+    const roots = new Map<string, Set<string>>(data.groups.map((group: any) => [group.id, new Set<string>()]));
+    for (const workspace of workspaces) {
+        for (const groupId of membership(data, workspace.workspaceId)) {
+            const ids = roots.get(groupId);
+            if (ids) for (const id of workspace.sessionIds) ids.add(id);
+        }
     }
-    let running = 0, pending = 0, unread = 0;
-    ids.forEach((id) => { const status = statuses.get(id); if ((status?.running ?? sessions.byId?.[id]?.running) === true) running++; if (status?.pendingInteraction) pending++; if (status?.completionUnread) unread++; });
-    return { running, pending, unread };
+    return new Map([...roots].map(([id, sessions]) => [id, [...sessions].sort()]));
+}
+function sameGroupRoots(left: GroupRoots, right: GroupRoots): boolean {
+    return sameMap(left, right, (a, b) => a.length === b.length && a.every((id, index) => id === b[index]));
+}
+function selectGroupActivity(roots: GroupRoots, sessions: any): GroupActivity {
+    return new Map([...roots].map(([groupId, parents]) => {
+        const ids = new Set(parents);
+        for (const id of parents) {
+            const catalog = sessions.projectionsBySession?.[id]?.values?.subagentCatalog;
+            if (catalog) for (const item of Object.values(catalog) as any[]) if (item?.id) ids.add(item.id);
+        }
+        return [groupId, new Map([...ids].map((id) => [id, sessions.byId?.[id]?.running === true]))];
+    }));
+}
+function sameGroupActivity(left: GroupActivity, right: GroupActivity): boolean {
+    return sameMap(left, right, (a, b) => sameMap(a, b));
+}
+function selectGroupCounts(activity: GroupActivity, statuses: Map<string, any>): GroupCounts {
+    return new Map([...activity].map(([groupId, sessions]) => {
+        let running = 0, pending = 0, unread = 0;
+        for (const [id, fallbackRunning] of sessions) {
+            const status = statuses.get(id);
+            if ((status?.running ?? fallbackRunning) === true) running++;
+            if (status?.pendingInteraction) pending++;
+            if (status?.completionUnread) unread++;
+        }
+        return [groupId, { running, pending, unread }];
+    }));
+}
+function sameGroupCounts(left: GroupCounts, right: GroupCounts): boolean {
+    return sameMap(left, right, (a, b) => a.running === b.running && a.pending === b.pending && a.unread === b.unread);
 }
 function groupIndicator(counts: { running: number; pending: number; unread: number }) {
     const state = counts.pending ? 'wait' : counts.running ? 'busy' : counts.unread ? 'done' : 'idle';
@@ -203,11 +244,32 @@ function observeViewport(element: HTMLDivElement, onWidth: (width: number) => vo
     measure();
     return () => { active = false; observer.disconnect(); };
 }
+// Share one observer across the footer glyphs; visibility changes never drive React frames.
+function observeGlyphMotion(element: HTMLDivElement) {
+    const glyphs = element.querySelectorAll<HTMLElement>(".nq-group>.nq-glyph");
+    const syncVisibility = () => { element.dataset.documentHidden = String(document.hidden); };
+    const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) (entry.target as HTMLElement).dataset.inViewport = String(entry.isIntersecting && entry.intersectionRect.width > 0 && entry.intersectionRect.height > 0);
+    }, { root: element });
+    syncVisibility();
+    document.addEventListener("visibilitychange", syncVisibility);
+    glyphs.forEach((glyph) => observer.observe(glyph));
+    return () => {
+        observer.disconnect();
+        document.removeEventListener("visibilitychange", syncVisibility);
+        delete element.dataset.documentHidden;
+        glyphs.forEach((glyph) => { delete glyph.dataset.inViewport; });
+    };
+}
 function Footer(props: any) {
     const data = useData();
-    const workspaces = props.useWorkspaces((s: any) => s.items);
-    const sessions = props.useSessions((s: any) => s);
-    const statuses = props.useSessionStatus((s: any) => s);
+    if (!data || data.mode !== 'groups' || !props.wide) return null;
+    return <GroupFooter {...props} data={data} />;
+}
+function GroupFooter({ data, ...props }: any) {
+    const roots = props.useWorkspaces(useCallback((s: any) => selectGroupRoots(data, s.items), [data]), sameGroupRoots);
+    const activity = props.useSessions(useCallback((s: any) => selectGroupActivity(roots, s), [roots]), sameGroupActivity);
+    const countsByGroup = props.useSessionStatus(useCallback((s: Map<string, any>) => selectGroupCounts(activity, s), [activity]), sameGroupCounts);
     const viewport = useRef(null as HTMLDivElement | null);
     const [width, setWidth] = useState(0);
     const dragged = useRef(null as string | null);
@@ -315,6 +377,9 @@ function Footer(props: any) {
         if (viewportElement) return observeViewport(viewportElement, setWidth);
     }, [viewportElement]);
     useLayoutEffect(() => {
+        if (viewportElement) return observeGlyphMotion(viewportElement);
+    }, [viewportElement, data.groups]);
+    useLayoutEffect(() => {
         const media = window.matchMedia('(prefers-reduced-motion: reduce)');
         const syncMotion = () => {
             reducedMotion.current = media.matches;
@@ -361,9 +426,7 @@ function Footer(props: any) {
             cancelAnimations();
         };
     }, [finishDrag, insideViewport, stopScroll, cancelAnimations]);
-    useEffect(() => { if (!data || data.mode !== 'groups' || !props.wide) finishDrag(); }, [data?.mode, props.wide, finishDrag]);
     useEffect(() => { viewport.current?.querySelector('[aria-pressed=true]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }, [data?.activeGroupId]);
-    if (!data || data.mode !== 'groups' || !props.wide) return null;
     const groups = arrangeGroups(data.groups, previewIds || groupOrder) as any[];
     const compact = width < groups.length * 30;
     return <div className="nq-footer"><div ref={attachViewport} className={`nq-viewport ${compact ? 'nq-compact' : ''}`} onPointerMove={steer} onPointerLeave={stopScroll}
@@ -386,7 +449,7 @@ function Footer(props: any) {
             }
             finishDrag();
         }}><div className="nq-track">{groups.map((group: any, index: number) => {
-        const counts = aggregate(group.id, data, workspaces, statuses, sessions);
+        const counts = countsByGroup.get(group.id)!;
         const { state, showBadge } = groupIndicator(counts);
         const label = `${group.name} · ${counts.running} 个处理中，${counts.pending} 个等待操作，${counts.unread} 个完成未读`;
         return <div key={group.id} className="nq-cell" data-group-id={group.id} data-selected={group.id === data.activeGroupId} data-dragging={dragId === group.id} data-drop={drop?.targetId === group.id ? drop.placement : undefined}>
@@ -422,20 +485,38 @@ function Footer(props: any) {
                     const buttons = [...viewport.current!.querySelectorAll('button')] as HTMLButtonElement[];
                     const next = e.key === 'Home' ? 0 : e.key === 'End' ? buttons.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length; buttons[next].focus();
                 }}>
-                {counts.running > 0 && <P.StateDot state="ongoing" size={30} className="nq-running-ring" />}
-                <span className="nq-glyph" aria-hidden="true"><Icon value={group.icon} size={16} /></span><span className="nq-dot" aria-hidden="true"><span className="nq-dot-pulse" /></span>{showBadge && <span className="nq-badge" aria-hidden="true" />}
+                <span className="nq-glyph" aria-hidden="true"><span className="nq-glyph-base"><Icon value={group.icon} size={16} /></span>{counts.running > 0 && <span className="nq-running-sweep"><Icon value={group.icon} size={16} /></span>}</span><span className="nq-dot" aria-hidden="true"><span className="nq-dot-pulse" /></span>{showBadge && <span className="nq-badge" aria-hidden="true" />}
             </button></P.Tooltip></div>;
     })}</div></div><P.Tooltip label="新建组"><button type="button" className="nq-icon-button" aria-label="新建组" onClick={() => showEditor()}><P.IconPlusOutlineRegular size={18} /></button></P.Tooltip></div>;
 }
 function Root(props: any) {
     const data = useData();
     const workspaces = props.useWorkspaces((s: any) => s.items);
-    const { workspaceVisible, sessionVisible, showUngrouped } = groupVisibility(data, workspaces);
-    const bridge = { Heading, workspaceVisible, sessionVisible, searchSources: (list: any, remote: any) => filterSearchSources(list, remote, sessionVisible), showUngrouped,
-        workspaceMenu: (workspaceId: string) => !data || !workspaceId ? [] : [{ id: 'nestquay-add', label: '添加到组', submenu: data.groups.map((g: any) => ({ id: `nestquay-add:${g.id}`, label: g.name, icon: <span className="nq-menu-icon"><Icon value={g.icon} size={16} /></span>, disabled: membership(data, workspaceId).includes(g.id) })) }, ...(data.mode === 'groups' ? [{ id: `nestquay-remove:${data.activeGroupId}`, label: '从当前组移除' }] : [])],
-        selectWorkspaceMenu: (id: string, workspaceId: string) => { if (!id.startsWith('nestquay-')) return false; const [action, groupId] = id.split(':'); if (groupId) fire({ action: action === 'nestquay-add' ? 'add' : 'remove', groupId, workspaceId }); return true; },
+    const bridge = useMemo(() => {
+        const { workspaceVisible, sessionVisible, showUngrouped } = groupVisibility(data, workspaces);
+        return { Heading, workspaceVisible, sessionVisible, searchSources: (list: any, remote: any) => filterSearchSources(list, remote, sessionVisible), showUngrouped,
+            workspaceMenu: (workspaceId: string) => !data || !workspaceId ? [] : [{ id: 'nestquay-add', label: '添加到组', submenu: data.groups.map((g: any) => ({ id: `nestquay-add:${g.id}`, label: g.name, icon: <span className="nq-menu-icon"><Icon value={g.icon} size={16} /></span>, disabled: membership(data, workspaceId).includes(g.id) })) }, ...(data.mode === 'groups' ? [{ id: `nestquay-remove:${data.activeGroupId}`, label: '从当前组移除' }] : [])],
+            selectWorkspaceMenu: (id: string, workspaceId: string) => { if (!id.startsWith('nestquay-')) return false; const [action, groupId] = id.split(':'); if (groupId) fire({ action: action === 'nestquay-add' ? 'add' : 'remove', groupId, workspaceId }); return true; },
+        };
+    }, [data, workspaces]);
+    const renderSlot = useCallback((key: string, owner: any, options: any) => props.renderSlot(`nestquay.${key}`, owner, options), [props.renderSlot]);
+    return <div className="nq-root"><BridgeContext.Provider value={bridge}><Browser {...props} renderSlot={renderSlot} /></BridgeContext.Provider>{failure && <div role="alert" className="nq-error">{failure}<button className="nq-icon-button" aria-label="重试加载分组" onClick={() => fire({ action: 'list' })}>↻</button></div>}<GroupDialogs /></div>;
+}
+function mirrorSlotEntries(slots: any, key: string): () => void {
+    const mirrored = new Map<any, () => void>();
+    const sync = () => {
+        const entries = slots.entriesOfSlot(key);
+        const live = new Set(entries);
+        for (const [entry, dispose] of mirrored) {
+            if (!live.has(entry)) { dispose(); mirrored.delete(entry); }
+        }
+        for (const entry of entries) {
+            if (!mirrored.has(entry)) mirrored.set(entry, slots.register({ name: `nestquay.${key}`, ...entry.options, store: entry.store, inject: entry.inject, locale: entry.locale, select: entry.select }, entry.component));
+        }
     };
-    return <div className="nq-root"><BridgeContext.Provider value={bridge}><Browser {...props} renderSlot={(key: string, owner: any, options: any) => props.renderSlot(`nestquay.${key}`, owner, options)} /></BridgeContext.Provider>{failure && <div role="alert" className="nq-error">{failure}<button className="nq-icon-button" aria-label="重试加载分组" onClick={() => fire({ action: 'list' })}>↻</button></div>}<GroupDialogs /></div>;
+    sync();
+    const unsubscribe = slots.subscribe(key, sync);
+    return () => { unsubscribe(); mirrored.forEach((dispose) => dispose()); mirrored.clear(); };
 }
 export const inject = ['slots', 'locale', 'uiWorkspace'];
 export function apply(ctx: any) {
@@ -451,12 +532,7 @@ export function apply(ctx: any) {
             const children: any = {};
             for (const [key, spec] of Object.entries(upstream.children)) children[`nestquay.${key}`] = spec;
             release = ctx.slots.register({ name: 'sidebar.workspaces', priority: -100, children, store: upstream.store, inject: upstream.inject, locale: upstream.locale }, Root);
-            for (const key of Object.keys(upstream.children)) {
-                let mirrored: (() => void)[] = [];
-                const sync = () => { mirrored.forEach((dispose) => dispose()); mirrored = ctx.slots.entriesOfSlot(key).map((entry: any) => ctx.slots.register({ name: `nestquay.${key}`, ...entry.options, store: entry.store, inject: entry.inject, locale: entry.locale, select: entry.select }, entry.component)); };
-                sync();
-                disposers.push(ctx.slots.subscribe(key, sync), () => mirrored.forEach((dispose) => dispose()));
-            }
+            for (const key of Object.keys(upstream.children)) disposers.push(mirrorSlotEntries(ctx.slots, key));
         };
         const stopWatching = ctx.slots.subscribe('sidebar.workspaces', install);
         install();

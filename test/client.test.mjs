@@ -50,7 +50,7 @@ for (const delayed of [false, true]) test(`native SlotCore activation, status/se
         setInterval: () => 1, clearInterval() {},
         fetch: async () => ({ ok: true, json: async () => ({ revision: 0, mode: 'groups', selectedGroupId: 'default', groups: [{ id: 'default', name: '默认', icon: 'folder', workspaceIds: [] }] }) }),
     };
-    vm.runInNewContext(ts.transpileModule(`${source}\nexport const inspectPure = { aggregate, filterSearchSources, membership, groupVisibility };`, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText, context);
+    vm.runInNewContext(ts.transpileModule(`${source}\nexport const inspectPure = { selectGroupRoots, selectGroupActivity, selectGroupCounts, filterSearchSources, membership, groupVisibility };`, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText, context);
     const ctx = {
         effect(callback) { const dispose = callback(); if (typeof dispose === 'function') cleanups.push(dispose); return dispose; },
         slots: {
@@ -79,14 +79,38 @@ for (const delayed of [false, true]) test(`native SlotCore activation, status/se
     assert.equal(mirrored.options.order, 123);
     assert.equal(mirrored.inject, officialInject);
     assert.equal(mirrored.locale, 'external-action');
+    const targetSlot = `nestquay.${childName}`;
+    const sibling = () => null;
+    const removeSibling = core.register({ name: childName, id: 'sibling', order: 50 }, sibling);
+    await new Promise(setImmediate);
+    assert.equal(core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'external'), mirrored, 'adding another entry must not recreate an unchanged mirrored entry');
+    const siblingMirror = core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'sibling');
+    const replacement = () => null;
+    const removeReplacement = core.register({ name: childName, id: 'external', priority: -10, order: 42, locale: 'replacement' }, replacement);
+    await new Promise(setImmediate);
+    assert.equal(core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'sibling'), siblingMirror, 'replacing a contribution preserves unrelated entry identity');
+    const updated = core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'external');
+    assert.notEqual(updated, mirrored);
+    assert.equal(updated.component, replacement);
+    assert.equal(updated.options.order, 42);
+    assert.equal(updated.locale, 'replacement');
+    removeReplacement();
+    await new Promise(setImmediate);
+    assert.equal(core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'external').component, externalAction);
+    assert.equal(core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'sibling'), siblingMirror);
+    const restored = core.entriesOfSlot(targetSlot).find(entry => entry.options.id === 'external');
+    removeSibling();
+    await new Promise(setImmediate);
+    assert.equal(core.entriesOfSlot(targetSlot)[0], restored, 'removing another entry must not recreate the surviving entry');
     const sessions = { byId: { parent: { running: true }, child: { running: true } }, projectionsBySession: { parent: { values: { subagentCatalog: [{ id: 'child' }] } } } };
-    const data = { workspaceGroups: { workspace: ['default'] }, defaultGroupId: 'default', activeGroupId: 'default', mode: 'groups' };
+    const data = { groups: [{ id: 'default' }], workspaceGroups: { workspace: ['default'] }, defaultGroupId: 'default', activeGroupId: 'default', mode: 'groups' };
     const workspaces = [{ workspaceId: 'workspace', sessionIds: ['parent'] }, { workspaceId: 'unassigned', sessionIds: ['other'] }];
-    const counts = exports.inspectPure.aggregate('default', data, workspaces, new Map([['child', { running: undefined, pendingInteraction: { kind: 'question' }, completionUnread: true }]]), sessions);
+    const aggregate = (metadata, statuses) => exports.inspectPure.selectGroupCounts(exports.inspectPure.selectGroupActivity(exports.inspectPure.selectGroupRoots(metadata, workspaces), sessions), statuses).get('default');
+    const counts = aggregate(data, new Map([['child', { running: undefined, pendingInteraction: { kind: 'question' }, completionUnread: true }]]));
     assert.deepEqual(JSON.parse(JSON.stringify(counts)), { running: 2, pending: 1, unread: 1 });
     const empty = { ...data, workspaceGroups: {} };
     assert.deepEqual([...exports.inspectPure.membership(empty, '__proto__')], []);
-    assert.deepEqual(JSON.parse(JSON.stringify(exports.inspectPure.aggregate('default', empty, workspaces, new Map(), sessions))), { running: 0, pending: 0, unread: 0 }, 'unassigned workspace activity must not appear on default-group icon');
+    assert.deepEqual(JSON.parse(JSON.stringify(aggregate(empty, new Map()))), { running: 0, pending: 0, unread: 0 }, 'unassigned workspace activity must not appear on default-group icon');
     const emptyVisibility = exports.inspectPure.groupVisibility(empty, workspaces);
     assert.equal(workspaces.some(emptyVisibility.workspaceVisible), false, 'default group starts empty');
     assert.equal(emptyVisibility.sessionVisible('parent'), false);

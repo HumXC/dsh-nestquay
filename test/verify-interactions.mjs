@@ -45,12 +45,13 @@ try {
     assert.ok(colorPixels > 100, 'the selected font actually renders colored Emoji pixels');
     browser('screenshot', '/tmp/nestquay-emoji-picker.png');
     browser('press', 'Escape'); browser('press', 'Escape'); dialogOpen = false;
-    const animation = evaluate(`(async()=>{const button=document.querySelector('.nq-group[data-busy=true]');if(!button)return{running:false};button.focus();const ring=button.querySelector('.nq-running-ring');const circles=Array.from(ring.querySelectorAll('circle'));const arc=circles.find(e=>getComputedStyle(e).animationName.includes('dash'));const start=getComputedStyle(arc).strokeDasharray;await new Promise(resolve=>setTimeout(resolve,400));const end=getComputedStyle(arc).strokeDasharray;const r=ring.getBoundingClientRect(),b=button.getBoundingClientRect();return{running:true,width:r.width,height:r.height,centerX:r.x+r.width/2-(b.x+b.width/2),centerY:r.y+r.height/2-(b.y+b.height/2),linecap:getComputedStyle(arc).strokeLinecap,stroke:getComputedStyle(arc).strokeWidth,animation:getComputedStyle(arc).animationName,dashChanges:start!==end,breathing:getComputedStyle(button.querySelector('.nq-dot-pulse')).animationName}})()`);
+    const animation = evaluate(`(async()=>{const button=document.querySelector('.nq-group[data-busy=true]');if(!button)return{running:false};button.focus();await new Promise(resolve=>setTimeout(resolve,250));const sweep=button.querySelector('.nq-running-sweep');const glyph=button.querySelector(':scope>.nq-glyph');const start=getComputedStyle(sweep).maskPosition;await new Promise(resolve=>setTimeout(resolve,400));const style=getComputedStyle(sweep),r= glyph.getBoundingClientRect(),b=button.getBoundingClientRect();return{running:true,width:r.width,height:r.height,centerX:r.x+r.width/2-(b.x+b.width/2),centerY:r.y+r.height/2-(b.y+b.height/2),animation:style.animationName,duration:style.animationDuration,playState:style.animationPlayState,maskChanges:start!==style.maskPosition,noRing:!button.querySelector('.nq-running-ring'),breathing:getComputedStyle(button.querySelector('.nq-dot-pulse')).animationName}})()`);
     if (animation.running) {
-        assert.equal(animation.width, 30); assert.equal(animation.height, 30);
+        assert.equal(animation.width, 16); assert.equal(animation.height, 16);
         assert.ok(Math.abs(animation.centerX) < .1 && Math.abs(animation.centerY) < .1);
-        assert.equal(animation.linecap, 'round'); assert.equal(animation.stroke, '2px');
-        assert.equal(animation.dashChanges, true); assert.equal(animation.breathing, 'nq-breathe');
+        assert.equal(animation.animation, 'nq-color-sweep'); assert.equal(animation.duration, '3.2s');
+        assert.equal(animation.playState, 'running'); assert.equal(animation.maskChanges, true);
+        assert.equal(animation.noRing, true); assert.equal(animation.breathing, 'nq-breathe');
     }
     browser('screenshot', '/tmp/nestquay-sidebar.png');
     const after = evaluate(`(async()=>await(await fetch('/api/nestquay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'list'})})).json())()`);

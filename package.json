@@ -1,6 +1,6 @@
 {
     "name": "dsh-nestquay",
-    "version": "0.1.14",
+    "version": "0.1.15",
     "type": "module",
     "description": "Workspace groups for the official DSH sidebar, preserving session and workspace services.",
     "license": "MIT",

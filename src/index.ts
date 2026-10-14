@@ -62,7 +62,7 @@ export function nestquayCommand(store: NestquayStore): CommandDefinition {
 export function nestquayTool(store: NestquayStore): ToolDefinition {
     return {
         name: 'nestquay_groups',
-        description: 'List and manage Nestquay group metadata. Returns the complete saved snapshot. Deleting a group preserves workspaces and falls orphaned memberships back to the default group.',
+        description: 'List and manage Nestquay group metadata. Returns the complete saved snapshot. Deleting a group removes its memberships without deleting workspaces or assigning them to another group.',
         parameters: {
             type: 'object',
             properties: {
