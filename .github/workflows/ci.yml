@@ -1,0 +1,98 @@
+name: CI and Release
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Build, test and package
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Check tag matches package version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          node -e 'const version = require("./package.json").version; if (process.env.GITHUB_REF_NAME !== "v" + version) throw new Error("Release tag must match package version v" + version);'
+      - name: Install project dependencies
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Install matching DSH runtime
+        run: |
+          nestquay_dsh_version="$(node -p 'require("./package.json").peerDependencies["@deepseek-ai/dsh"]')"
+          nestquay_dsh_prefix="$RUNNER_TEMP/nestquay-dsh"
+          npm install --global --prefix "$nestquay_dsh_prefix" --ignore-scripts --no-audit --no-fund "@deepseek-ai/dsh@$nestquay_dsh_version"
+          echo "NESTQUAY_DSH_ROOT=$nestquay_dsh_prefix/lib/node_modules/@deepseek-ai/dsh" >> "$GITHUB_ENV"
+      - name: Build and test
+        run: |
+          npm run build
+          npm test
+      - name: Pack release asset
+        run: |
+          mkdir -p dist
+          npm pack --ignore-scripts --pack-destination dist
+          nestquay_version="$(node -p 'require("./package.json").version')"
+          cp "dist/dsh-nestquay-$nestquay_version.tgz" dist/dsh-nestquay.tgz
+      - name: Generate checksum
+        working-directory: dist
+        run: sha256sum dsh-nestquay.tgz > SHA256SUMS
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: nestquay-${{ github.sha }}
+          path: |
+            dist/dsh-nestquay.tgz
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: nestquay-${{ github.sha }}
+          path: dist
+      - name: Verify package checksum
+        working-directory: dist
+        run: sha256sum --check SHA256SUMS
+      - name: Publish package
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            nestquay_release_flags=(--draft --verify-tag --generate-notes --title "Nestquay $GITHUB_REF_NAME")
+            if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+              nestquay_release_flags+=(--prerelease)
+            fi
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" "${nestquay_release_flags[@]}"
+          fi
+          gh release upload "$GITHUB_REF_NAME" dist/dsh-nestquay.tgz dist/SHA256SUMS --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
