@@ -97,20 +97,20 @@ test('session selector tracks running fallbacks and lineage, ignoring unrelated 
     assert.equal(lineage.get('b').has('new-child'), true);
 });
 
-test('status selector ignores unrelated updates and equivalent requests; running, waiting and unread counts remain live', () => {
+test('status selector ignores unrelated updates and child unread; running, waiting and root unread counts remain live', () => {
     const { probe } = fixture();
     const roots = probe.selectGroupRoots(metadata(), [{ workspaceId: 'w', sessionIds: ['parent'] }]);
     const activity = probe.selectGroupActivity(roots, { byId: { parent: { running: true }, child: { running: true } }, projectionsBySession: { parent: { values: { subagentCatalog: [{ id: 'child' }] } } } });
-    const statuses = new Map([['parent', { running: false }], ['child', { running: undefined, pendingInteraction: { key: 'first' }, completionUnread: true }]]);
-    const selected = probe.selectGroupCounts(activity, statuses);
+    const statuses = new Map([['parent', { running: false, completionUnread: true }], ['child', { running: undefined, pendingInteraction: { key: 'first' }, completionUnread: true }]]);
+    const selected = probe.selectGroupCounts(activity, statuses, roots);
     assert.deepEqual(JSON.parse(JSON.stringify(selected.get('a'))), { running: 1, pending: 1, unread: 1 });
-    const irrelevant = probe.selectGroupCounts(activity, new Map([...statuses, ['outside', { running: true, pendingInteraction: {}, completionUnread: true }], ['child', { running: undefined, pendingInteraction: { key: 'replacement' }, completionUnread: true }]]));
+    const irrelevant = probe.selectGroupCounts(activity, new Map([...statuses, ['outside', { running: true, pendingInteraction: {}, completionUnread: true }], ['child', { running: undefined, pendingInteraction: { key: 'replacement' }, completionUnread: false }]]), roots);
     assert.equal(probe.sameGroupCounts(selected, irrelevant), true);
-    for (const next of [
-        { running: false, pendingInteraction: {}, completionUnread: true },
-        { running: undefined, completionUnread: true },
-        { running: undefined, pendingInteraction: {}, completionUnread: false },
-    ]) assert.equal(probe.sameGroupCounts(selected, probe.selectGroupCounts(activity, new Map([...statuses, ['child', next]]))), false);
+    for (const [id, next] of [
+        ['child', { running: false, pendingInteraction: {}, completionUnread: true }],
+        ['child', { running: undefined, completionUnread: true }],
+        ['parent', { running: false, completionUnread: false }],
+    ]) assert.equal(probe.sameGroupCounts(selected, probe.selectGroupCounts(activity, new Map([...statuses, [id, next]]), roots)), false);
 });
 
 test('inactive footer never invokes workspace/session hooks; active footer mounts its child', () => {

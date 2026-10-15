@@ -105,9 +105,12 @@ for (const delayed of [false, true]) test(`native SlotCore activation, status/se
     const sessions = { byId: { parent: { running: true }, child: { running: true } }, projectionsBySession: { parent: { values: { subagentCatalog: [{ id: 'child' }] } } } };
     const data = { groups: [{ id: 'default' }], workspaceGroups: { workspace: ['default'] }, defaultGroupId: 'default', activeGroupId: 'default', mode: 'groups' };
     const workspaces = [{ workspaceId: 'workspace', sessionIds: ['parent'] }, { workspaceId: 'unassigned', sessionIds: ['other'] }];
-    const aggregate = (metadata, statuses) => exports.inspectPure.selectGroupCounts(exports.inspectPure.selectGroupActivity(exports.inspectPure.selectGroupRoots(metadata, workspaces), sessions), statuses).get('default');
+    const aggregate = (metadata, statuses) => {
+        const roots = exports.inspectPure.selectGroupRoots(metadata, workspaces);
+        return exports.inspectPure.selectGroupCounts(exports.inspectPure.selectGroupActivity(roots, sessions), statuses, roots).get('default');
+    };
     const counts = aggregate(data, new Map([['child', { running: undefined, pendingInteraction: { kind: 'question' }, completionUnread: true }]]));
-    assert.deepEqual(JSON.parse(JSON.stringify(counts)), { running: 2, pending: 1, unread: 1 });
+    assert.deepEqual(JSON.parse(JSON.stringify(counts)), { running: 2, pending: 1, unread: 0 });
     const empty = { ...data, workspaceGroups: {} };
     assert.deepEqual([...exports.inspectPure.membership(empty, '__proto__')], []);
     assert.deepEqual(JSON.parse(JSON.stringify(aggregate(empty, new Map()))), { running: 0, pending: 0, unread: 0 }, 'unassigned workspace activity must not appear on default-group icon');

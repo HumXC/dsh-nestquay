@@ -98,6 +98,19 @@ async function request(operation: any) {
     return snapshot;
 }
 function dispatch(operation: any) { return request(operation).catch((error) => { failure = error.message; emit(); throw error; }); }
+async function createWorkspaceInGroup(createWorkspace: (input: any) => Promise<any>, data: any, input: any) {
+    const groupId = data?.mode === 'groups' ? data.activeGroupId : undefined;
+    const groupName = data?.groups?.find((group: any) => group.id === groupId)?.name || '当前组';
+    const workspace = await createWorkspace(input);
+    if (groupId) {
+        try {
+            await dispatch({ action: 'add', groupId, workspaceId: workspace.workspaceId });
+        } catch (error) {
+            throw new Error(`工作区已创建，但无法加入分组“${groupName}”：${error instanceof Error ? error.message : String(error)}。可重新选择同一目录重试。`, { cause: error });
+        }
+    }
+    return workspace;
+}
 function fire(operation: any) { void dispatch(operation).catch(() => {}); }
 function showEditor(group: any = null) { editor = group || { name: '', icon: '📁' }; emit(); }
 function showRemoval(group: any) { if (!group || !snapshot || snapshot.groups.length === 1) return; removal = { ...group }; emit(); }
@@ -217,14 +230,16 @@ function selectGroupActivity(roots: GroupRoots, sessions: any): GroupActivity {
 function sameGroupActivity(left: GroupActivity, right: GroupActivity): boolean {
     return sameMap(left, right, (a, b) => sameMap(a, b));
 }
-function selectGroupCounts(activity: GroupActivity, statuses: Map<string, any>): GroupCounts {
+function selectGroupCounts(activity: GroupActivity, statuses: Map<string, any>, roots: GroupRoots): GroupCounts {
     return new Map([...activity].map(([groupId, sessions]) => {
         let running = 0, pending = 0, unread = 0;
+        // A subagent reminder is not cleared by viewing its parent. Match sidebar session rows for unread.
+        const completionIds = new Set(roots.get(groupId));
         for (const [id, fallbackRunning] of sessions) {
             const status = statuses.get(id);
             if ((status?.running ?? fallbackRunning) === true) running++;
             if (status?.pendingInteraction) pending++;
-            if (status?.completionUnread) unread++;
+            if (completionIds.has(id) && status?.completionUnread) unread++;
         }
         return [groupId, { running, pending, unread }];
     }));
@@ -269,7 +284,7 @@ function Footer(props: any) {
 function GroupFooter({ data, ...props }: any) {
     const roots = props.useWorkspaces(useCallback((s: any) => selectGroupRoots(data, s.items), [data]), sameGroupRoots);
     const activity = props.useSessions(useCallback((s: any) => selectGroupActivity(roots, s), [roots]), sameGroupActivity);
-    const countsByGroup = props.useSessionStatus(useCallback((s: Map<string, any>) => selectGroupCounts(activity, s), [activity]), sameGroupCounts);
+    const countsByGroup = props.useSessionStatus(useCallback((s: Map<string, any>) => selectGroupCounts(activity, s, roots), [activity, roots]), sameGroupCounts);
     const viewport = useRef(null as HTMLDivElement | null);
     const [width, setWidth] = useState(0);
     const dragged = useRef(null as string | null);
@@ -500,7 +515,8 @@ function Root(props: any) {
         };
     }, [data, workspaces]);
     const renderSlot = useCallback((key: string, owner: any, options: any) => props.renderSlot(`nestquay.${key}`, owner, options), [props.renderSlot]);
-    return <div className="nq-root"><BridgeContext.Provider value={bridge}><Browser {...props} renderSlot={renderSlot} /></BridgeContext.Provider>{failure && <div role="alert" className="nq-error">{failure}<button className="nq-icon-button" aria-label="重试加载分组" onClick={() => fire({ action: 'list' })}>↻</button></div>}<GroupDialogs /></div>;
+    const createWorkspace = useCallback((input: any) => createWorkspaceInGroup(props.createWorkspace, data, input), [props.createWorkspace, data]);
+    return <div className="nq-root"><BridgeContext.Provider value={bridge}><Browser {...props} renderSlot={renderSlot} createWorkspace={createWorkspace} /></BridgeContext.Provider>{failure && <div role="alert" className="nq-error">{failure}<button className="nq-icon-button" aria-label="重试加载分组" onClick={() => fire({ action: 'list' })}>↻</button></div>}<GroupDialogs /></div>;
 }
 function mirrorSlotEntries(slots: any, key: string): () => void {
     const mirrored = new Map<any, () => void>();
