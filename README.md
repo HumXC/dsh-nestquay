@@ -4,11 +4,23 @@
 
 你可以按项目、用途或工作阶段建立组，为每个组选择图标或 Emoji，并在侧栏底部快速切换。工作区和会话仍按熟悉的方式使用。
 
+## 界面预览
+
+![Nestquay 分组总览、状态提示与分组管理](assets/screenshots/nestquay-sidebar.png)
+
+截图使用虚构的工作区和会话，仅展示侧栏及分组菜单。
+
 ## 安装
 
 适用于 DSH **0.2.0-rc.2**。
 
-通过 DSH 的 Plugin Manager 安装 Nestquay 插件包并启用，然后刷新页面。如果安装或更新时提示需要重启，请按提示重启 DSH。
+使用 DSH 命令行，从 GitHub Release 安装到 `web` profile：
+
+```bash
+dsh plugin --profile web add https://github.com/HumXC/dsh-nestquay/releases/latest/download/dsh-nestquay.tgz
+```
+
+使用自定义 profile 时，将 `web` 替换为对应的 profile 名称。安装后重启 DSH，并刷新浏览器页面。
 
 ## 开始使用
 
