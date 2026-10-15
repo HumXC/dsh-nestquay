@@ -1,75 +1,77 @@
 # Nestquay
 
-为 DSH 的工作区侧栏增加分组，让多个项目更容易找到和管理。
+**English** | [简体中文](README.zh-CN.md)
 
-你可以按项目、用途或工作阶段建立组，为每个组选择图标或 Emoji，并在侧栏底部快速切换。工作区和会话仍按熟悉的方式使用。
+Workspace groups for the DSH sidebar, so you can find and manage multiple projects more easily.
 
-## 界面预览
+Organize workspaces by project, purpose, or stage of work. Give each group an icon or emoji and switch between groups from the bottom of the sidebar. Your workspaces and sessions keep their familiar behavior.
 
-![Nestquay 分组总览、状态提示与分组管理](assets/screenshots/nestquay-sidebar.png)
+## Preview
 
-截图使用虚构的工作区和会话，仅展示侧栏及分组菜单。
+![Nestquay workspace groups, session activity, and group management](assets/screenshots/nestquay-sidebar.png)
 
-## 安装
+The screenshot uses fictional workspaces and sessions and shows only the sidebar and group menus.
 
-适用于 DSH **0.2.0-rc.2**。
+## Installation
 
-使用 DSH 命令行，从 GitHub Release 安装到 `web` profile：
+Compatible with DSH **0.2.0-rc.2**.
+
+Use the DSH CLI to install the GitHub Release package into your `web` profile:
 
 ```bash
 dsh plugin --profile web add https://github.com/HumXC/dsh-nestquay/releases/latest/download/dsh-nestquay.tgz
 ```
 
-使用自定义 profile 时，将 `web` 替换为对应的 profile 名称。安装后重启 DSH，并刷新浏览器页面。
+For a custom profile, replace `web` with its name. Restart DSH after installation, then refresh the browser page.
 
-## 开始使用
+## Getting started
 
-1. 点击侧栏标题旁的切换按钮，进入分组视图。
-2. 点击底部的 **＋**，填写组名并选择图标。
-3. 打开工作区的 **…** 菜单，选择 **添加到组**，再选择目标组。
-4. 点击底部的组图标，查看该组中的工作区。
+1. Click the view switch beside the sidebar heading to enter the group view.
+2. Click **＋** at the bottom, enter a group name, and choose an icon.
+3. Open a workspace's **…** menu, choose **Add to group (添加到组)**, and select a group.
+4. Click a group icon at the bottom to see its workspaces.
 
-首次使用时会有一个空的默认组。在分组视图中新建工作区，会自动加入创建时的当前组；已有工作区可通过 **添加到组** 菜单加入。同一个工作区可以加入多个组。没有加入任何组的工作区，仍可在原来的工作区视图中找到。
+The initial default group is empty. New workspaces created in the group view automatically join the group that was active when creation began. Add existing workspaces through the **Add to group (添加到组)** menu. A workspace can belong to multiple groups. Workspaces without a group remain available in the standard workspace view.
 
-## 管理分组
+## Managing groups
 
-- **编辑或删除组**：打开当前组标题旁的 **…** 菜单。
-- **移出工作区**：在组内打开工作区的 **…** 菜单，从当前组移除。
-- **调整顺序**：拖动底部的组图标，其他图标会让出位置；放下后保存顺序。取消拖动或在区域外放下，会恢复原顺序。
-- **键盘排序**：聚焦组图标后，按 **Alt＋左／右方向键**移动。
+- **Edit or delete a group:** open the **…** menu beside the current group heading.
+- **Remove a workspace from a group:** open its **…** menu inside the group and choose **Remove from current group (从当前组移除)**.
+- **Reorder groups:** drag a footer icon. Other icons make room as you move it, and dropping it saves the order. Canceling the drag or dropping outside the navigation restores the original order.
+- **Reorder with the keyboard:** focus a group icon and press **Alt + Left Arrow** or **Alt + Right Arrow**.
 
-至少保留一个组，因此最后一个组不能删除。删除组不会删除其中的工作区或会话；工作区在其他组中的归属也会保留。
+At least one group must remain, so the last group cannot be deleted. Deleting a group does not delete its workspaces or sessions, or remove those workspaces from other groups.
 
-分组和视图选择会记住。图标顺序保存在当前浏览器中，刷新后仍会保留。
+Groups and the selected view are remembered. Icon order is stored in the current browser and survives page reloads.
 
-## 图标与窄侧栏
+## Icons and narrow sidebars
 
-组图标可以使用图标列表中的图标，也可以选择或粘贴 Emoji。Emoji 在选择器、预览和输入框中保持相同样式；底部未选中的组会灰显，选中后恢复原色。
+Choose a built-in icon, select an emoji, or paste one. Emoji use a consistent appearance in the picker, preview, and input field. In the footer, inactive groups appear in grayscale; the selected group shows its original colors.
 
-侧栏变窄时，未选中的组会缩成圆点。将鼠标移到圆点上，或用键盘聚焦，即可展开图标并查看组名。组数较多时，将鼠标停在导航栏左右边缘即可滚动。
+When the sidebar gets narrow, inactive group icons collapse into dots. Hover over or focus a dot to expand the icon and see the group name. If there are many groups, hover near either edge of the navigation bar to scroll.
 
-## 查看会话状态
+## Session activity
 
-底部的组图标会汇总组内会话的状态，悬停或聚焦时可以查看数量。
+Footer icons summarize the activity of sessions in each group. Hover over or focus an icon to see the counts.
 
-| 显示 | 含义 |
+| Indicator | Meaning |
 | --- | --- |
-| 图标原色缓慢扫过或呼吸圆点 | 有会话正在处理 |
-| 绿色小点 | 有已完成、尚未查看的会话 |
-| 等待操作标记 | 有会话需要你回应或确认 |
+| A sweep of the icon's original colors, or a pulsing dot | A session is running. |
+| Green dot | A session has completed and has not been viewed yet. |
+| Interaction marker | A session needs your input or approval. |
 
-完成标记用于提醒查看会话，不代表任务结果已经验证成功。如果系统开启了“减少动画”，相关动效会停用。
+The completion marker is a reminder to open the session; it does not mean the task result has been verified. Animations are disabled when the system's reduced-motion setting is enabled.
 
-## 常见问题
+## FAQ
 
-**切换组会切换正在查看的会话吗？**
+**Does switching groups change the session I am viewing?**
 
-不会。切换组只改变侧栏显示的工作区，当前打开的会话保持不变。
+No. Switching groups only changes which workspaces appear in the sidebar. The open session stays the same.
 
-**从组中移除工作区后，到哪里找它？**
+**Where can I find a workspace after removing it from a group?**
 
-它仍在原来的工作区视图中。如果它也属于其他组，可以继续在那些组中找到。
+It remains in the standard workspace view. If it belongs to other groups, you can also find it there.
 
-**关闭插件后会怎样？**
+**What happens when I disable the plugin?**
 
-侧栏恢复原来的工作区界面，工作区和会话不受影响。
+The sidebar returns to its standard workspace view. Your workspaces and sessions are unaffected.
